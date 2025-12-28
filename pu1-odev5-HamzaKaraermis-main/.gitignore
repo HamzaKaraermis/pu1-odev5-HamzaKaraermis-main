@@ -1,0 +1,40 @@
+# Bytecode ve cache klasörleri
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Sanal ortamlar
+.venv/
+venv/
+env/
+ENV/
+
+# Test / araç cache'leri
+.pytest_cache/
+.cache/
+.coverage
+htmlcov/
+.tox/
+.mypy_cache/
+.pyre/
+
+# IDE / Editör dosyaları
+.vscode/
+.idea/
+*.iml
+
+# Sistem dosyaları
+.DS_Store
+Thumbs.db
+
+# Python paketleme dosyaları (ileride kullanırsan)
+build/
+dist/
+*.egg-info/
+
+# Jupyter notebok checkpoints (kullanırsan)
+.ipynb_checkpoints/
+
+# Codespaces / devcontainer (kullanıyorsan)
+.devcontainer/
+.gitpod.yml

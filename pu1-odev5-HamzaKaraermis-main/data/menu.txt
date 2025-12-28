@@ -1,0 +1,5 @@
+Cay, 15.0
+Kahve, 45.0
+Tost, 60.0
+Pasta, 75.0
+Su, 10.0
