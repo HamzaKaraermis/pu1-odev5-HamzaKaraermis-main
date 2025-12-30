@@ -15,17 +15,16 @@ def menuyu_oku(dosya_yolu):
     {"Cay": 15.0, "Tost": 60.0, ...}
     Return: dict
     """
-    menu = {}
+    menu_dict = {}
     try:
         with open(dosya_yolu, "r", encoding="utf-8") as dosya:
             for satir in dosya:
-                satir = satir.strip()
-                if satir:
-                    urun, fiyat = satir.split(",")
-                    menu[urun.strip()] = float(fiyat.strip())
+                if "," in satir:
+                    urun, fiyat = satir.strip().split(",")
+                    menu_dict[urun] = float(fiyat)
     except FileNotFoundError:
-        print("Menü dosyası bulunamadı!")
-    return menu
+        print(f"Hata: {dosya_yolu} bulunamadı.")
+    return menu_dict
 
 # DONE[2]: Kullanıcıdan input alarak sipariş listesi oluşturan fonksiyonu yazın.
 def siparis_al(menu):
@@ -39,17 +38,17 @@ def siparis_al(menu):
       - Yoksa "Menüde yok!" yazın.
     Return: Sipariş listesi (list of str) -> örn: ["Cay", "Tost"]
     """
-    siparisler = []
+    siparis_listesi = []
     while True:
-        secim = input("Ürün seç (Çıkış için 'q'): ").strip()
-        if secim.lower() == "q":
-            break
-        elif secim in menu:
-            siparisler.append(secim)
-            print("Eklendi")
+        secim = input("Ürün seç (Çıkış için 'q'): ").strip()        
+        if secim.lower() == 'q':
+            break 
+        if secim in menu:
+            siparis_listesi.append(secim)
+            print(f"-> {secim} eklendi.")
         else:
-            print("Menüde yok!")
-    return siparisler
+            print("(!) Menüde yok!")          
+    return siparis_listesi
 
 # DONE[3]: Siparişlerin toplam tutarını ve adedini hesaplayan fonksiyonu yazın.
 def hesabi_hesapla(siparis_listesi, menu):
@@ -58,10 +57,10 @@ def hesabi_hesapla(siparis_listesi, menu):
     Return: (toplam_tutar, urun_adedi) şeklinde TUPLE
     """
     toplam_tutar = 0
+    urun_adedi = len(siparis_listesi)
     for urun in siparis_listesi:
         toplam_tutar += menu[urun]
-    urun_adedi = len(siparis_listesi)
-    return toplam_tutar, urun_adedi
+    return (toplam_tutar, urun_adedi)
 
 # DONE[4]: Fiş metnini formatlı şekilde hazırlayan fonksiyonu yazın.
 def fisi_metne_dok(siparis_listesi, menu, toplam_tutar):
@@ -76,11 +75,12 @@ def fisi_metne_dok(siparis_listesi, menu, toplam_tutar):
     -------------------
     TOPLAM:        75.00
     """
-    fis = "--- PYTHON KAFE ---\n"
+    fis = "--- PYTHON KAFE ---\n"   
     for urun in siparis_listesi:
-        fis += f"{urun:<15}{menu[urun]:>10.2f}\n"
+        fiyat = menu[urun]
+        fis += f"{urun:<15} {fiyat:>10.2f}\n"   
     fis += "-------------------\n"
-    fis += f"TOPLAM:{toplam_tutar:>11.2f}"
+    fis += f"TOPLAM: {toplam_tutar:>17.2f}"
     return fis
 
 # DONE[5]: Fiş metnini dosyaya yazan fonksiyonu yazın.
