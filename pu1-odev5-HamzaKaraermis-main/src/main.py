@@ -6,7 +6,7 @@ Konular: file read/write, input, while, dict, list, tuple, f-string
 MENU_DOSYASI = "data/menu.txt"
 CIKIS_DOSYASI = "adisyon.txt"
 
-# TODO[1]: Menüyü dosyadan okuyup sözlük olarak döndüren fonksiyonu yazın.
+# DONE[1]: Menüyü dosyadan okuyup sözlük olarak döndüren fonksiyonu yazın.
 def menuyu_oku(dosya_yolu):
     """
     Parametre: dosya_yolu (str)
@@ -15,10 +15,19 @@ def menuyu_oku(dosya_yolu):
     {"Cay": 15.0, "Tost": 60.0, ...}
     Return: dict
     """
-    # Kod buraya gelecek
-    pass
+    menu = {}
+    try:
+        with open(dosya_yolu, "r", encoding="utf-8") as dosya:
+            for satir in dosya:
+                satir = satir.strip()
+                if satir:
+                    urun, fiyat = satir.split(",")
+                    menu[urun.strip()] = float(fiyat.strip())
+    except FileNotFoundError:
+        print("Menü dosyası bulunamadı!")
+    return menu
 
-# TODO[2]: Kullanıcıdan input alarak sipariş listesi oluşturan fonksiyonu yazın.
+# DONE[2]: Kullanıcıdan input alarak sipariş listesi oluşturan fonksiyonu yazın.
 def siparis_al(menu):
     """
     Parametre: menu (dict)
@@ -30,19 +39,31 @@ def siparis_al(menu):
       - Yoksa "Menüde yok!" yazın.
     Return: Sipariş listesi (list of str) -> örn: ["Cay", "Tost"]
     """
-    # Kod buraya gelecek
-    pass
+    siparisler = []
+    while True:
+        secim = input("Ürün seç (Çıkış için 'q'): ").strip()
+        if secim.lower() == "q":
+            break
+        elif secim in menu:
+            siparisler.append(secim)
+            print("Eklendi")
+        else:
+            print("Menüde yok!")
+    return siparisler
 
-# TODO[3]: Siparişlerin toplam tutarını ve adedini hesaplayan fonksiyonu yazın.
+# DONE[3]: Siparişlerin toplam tutarını ve adedini hesaplayan fonksiyonu yazın.
 def hesabi_hesapla(siparis_listesi, menu):
     """
     Parametreler: siparis_listesi (list), menu (dict)
     Return: (toplam_tutar, urun_adedi) şeklinde TUPLE
     """
-    # Kod buraya gelecek
-    pass
+    toplam_tutar = 0
+    for urun in siparis_listesi:
+        toplam_tutar += menu[urun]
+    urun_adedi = len(siparis_listesi)
+    return toplam_tutar, urun_adedi
 
-# TODO[4]: Fiş metnini formatlı şekilde hazırlayan fonksiyonu yazın.
+# DONE[4]: Fiş metnini formatlı şekilde hazırlayan fonksiyonu yazın.
 def fisi_metne_dok(siparis_listesi, menu, toplam_tutar):
     """
     Siparişleri ve toplamı şık bir string haline getirir.
@@ -55,18 +76,22 @@ def fisi_metne_dok(siparis_listesi, menu, toplam_tutar):
     -------------------
     TOPLAM:        75.00
     """
-    # Kod buraya gelecek
-    pass
+    fis = "--- PYTHON KAFE ---\n"
+    for urun in siparis_listesi:
+        fis += f"{urun:<15}{menu[urun]:>10.2f}\n"
+    fis += "-------------------\n"
+    fis += f"TOPLAM:{toplam_tutar:>11.2f}"
+    return fis
 
-# TODO[5]: Fiş metnini dosyaya yazan fonksiyonu yazın.
+# DONE[5]: Fiş metnini dosyaya yazan fonksiyonu yazın.
 def fisi_kaydet(fis_metni):
     """
     Parametre: fis_metni (str)
     'adisyon.txt' dosyasına yazma modunda (w) kaydeder.
     Return: None
     """
-    # Kod buraya gelecek
-    pass
+    with open(CIKIS_DOSYASI, "w", encoding="utf-8") as dosya:
+        dosya.write(fis_metni)
 
 
 # --- ANA PROGRAM ---
